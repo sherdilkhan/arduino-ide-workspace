@@ -53,7 +53,7 @@
     </table>
 
     <script>
-      const socket = new WebSocket('ws://192.168.10.5:81/');
+      const socket = new WebSocket('ws://192.168.8.102:81/');
 
       socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
@@ -63,6 +63,9 @@
         document.getElementById('v1').textContent = data.v1;
         document.getElementById('v2').textContent = data.v2;
         document.getElementById('v3').textContent = data.v3;
+        document.getElementById('lux1').textContent = data.lux1;
+        document.getElementById('lux2').textContent = data.lux2;
+        document.getElementById('lux3').textContent = data.lux3;
       };
     </script>
   </body>

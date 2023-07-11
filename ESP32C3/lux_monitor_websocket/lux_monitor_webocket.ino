@@ -3,8 +3,8 @@
 #include <WebSocketsServer.h>
 
 // Replace with your network credentials
-const char* ssid = "Sherdil";
-const char* password = "03336830763BB";
+const char* ssid = "Sherdil114";
+const char* password = "crescent114";
 
 // Set up the WebSocket server
 WebSocketsServer webSocketServer = WebSocketsServer(81);
@@ -51,9 +51,15 @@ void loop() {
   adcReading2 = analogRead(ADC1_1);
   adcReading3 = analogRead(ADC1_2);
 
+  // Convert ADC values to Voltages
   v1 = adcReading1*(3.3/4096);
   v2 = adcReading2*(3.3/4096);
   v3 = adcReading3*(3.3/4096);
+  
+  // Convert Voltages to Lux
+  lux1 = 207*v1;
+  lux2 = 207*v2;
+  lux3 = 207*v3;
 
   // Send ADC readings to connected clients
   sendADCReadings();
@@ -86,6 +92,6 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t* payload, size_t length)
 }
 
 void sendADCReadings() {
-  String json = "{\"adc1\":" + String(adcReading1) + ", \"adc2\":" + String(adcReading2) + ", \"adc3\":" + String(adcReading3) + ",\"v1\":" + String(v1) + ",\"v2\":" + String(v2) + ",\"v3\":" + String(v3) + "}";
+  String json = "{\"adc1\":" + String(adcReading1) + ", \"adc2\":" + String(adcReading2) + ", \"adc3\":" + String(adcReading3) + ", \"v1\":" + String(v1) + ", \"v2\":" + String(v2) + ", \"v3\":" + String(v3) + ", \"lux1\":" + String(lux1) + ", \"lux2\":" + String(lux2) + ", \"lux3\":" + String(lux3) + "}";
   webSocketServer.broadcastTXT(json);
 }
