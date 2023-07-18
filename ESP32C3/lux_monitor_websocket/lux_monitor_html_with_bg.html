@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ADC Readings</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-image: url("map2.png");
+        background-size: 50%; /* Adjust the background image size */
+        background-repeat: no-repeat;
+        /*background-position: center;*/
+        position: relative;
+      }
+      
+      .container {
+        margin-top: 20px;
+      }
+
+      .reading {
+        display: flex;
+        align-items: center;
+        position: absolute;
+      }
+
+      .label {
+        font-weight: bold;
+        width: 120px;
+      }
+
+      .value {
+        margin-left: 10px;
+      }
+
+      #reading1 {
+        top: 220px; /* Adjust the top position for the first reading */
+        left: 300px; /* Adjust the left position for the first reading */
+      }
+
+      #reading2 {
+        top: 390px; /* Adjust the top position for the second reading */
+        left: 300px; /* Adjust the left position for the second reading */
+      }
+
+      #reading3 {
+        top: 50px; /* Adjust the top position for the third reading */
+        left: 300px; /* Adjust the left position for the third reading */
+      }
+      #reading4 {
+        top: 220px; /* Adjust the top position for the third reading */
+        left: 70px; /* Adjust the left position for the third reading */
+      }
+      #reading5 {
+        top: 220px; /* Adjust the top position for the third reading */
+        left: 520px; /* Adjust the left position for the third reading */
+      }
+      #reading6 {
+        top: -7px; /* Adjust the top position for the third reading */
+        left: 450px; /* Adjust the left position for the third reading */
+      }
+      #reading7 {
+        top: -9px; /* Adjust the top position for the third reading */
+        left: 580px; /* Adjust the left position for the third reading */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="reading" id="reading1">
+        <span class="value" id="lux1"></span>
+      </div>
+      <div class="reading" id="reading2">
+        <span class="value" id="lux2"></span>
+      </div>
+      <div class="reading" id="reading3">
+        <span class="value" id="lux3"></span>
+      </div>
+      <div class="reading" id="reading4">
+        <span class="value" id="lux4"></span>
+      </div>
+      <div class="reading" id="reading5">
+        <span class="value" id="lux5"></span>
+      </div>
+      <div class="reading" id="reading6">
+        <span class="value" id="tc1"></span>
+      </div>
+      <div class="reading" id="reading7">
+        <span class="value" id="tc2"></span>
+      </div>
+    </div>
+
+    <script>
+      const socket = new WebSocket('ws://192.168.10.18:81/');
+
+      socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        document.getElementById('lux1').textContent = data.lux1;
+        document.getElementById('lux2').textContent = data.lux2;
+        document.getElementById('lux3').textContent = data.lux3;
+        document.getElementById('lux4').textContent = data.lux4;
+        document.getElementById('lux5').textContent = data.lux5;
+        document.getElementById('tc1').textContent = data.tc1;
+        document.getElementById('tc2').textContent = data.tc2;
+      };
+    </script>
+  </body>
+</html>

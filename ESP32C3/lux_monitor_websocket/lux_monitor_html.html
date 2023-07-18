@@ -27,45 +27,39 @@
   <body>
     <table>
       <tr>
-        <th>Channel</th>
-        <th>Reading</th>
-        <th>Voltage</th>
-        <th>Lux</th>
+        <th>Location</th>
+        <th>Light Intensity</th>
+        <th>Temperature</th>
       </tr>
       <tr>
-        <td>ADC 1</td>
-        <td id="adc1"></td>
-        <td id="v1"></td>
+        <td>Location 1</td>
         <td id="lux1"></td>
+        <td id="tc1"></td>
       </tr>
       <tr>
-        <td>ADC 2</td>
-        <td id="adc2"></td>
-        <td id="v2"></td>
+        <td>Location 2</td>
         <td id="lux2"></td>
+        <td id="tc2"></td>
       </tr>
       <tr>
-        <td>ADC 3</td>
-        <td id="adc3"></td>
-        <td id="v3"></td>
+        <td>Location 3</td>
         <td id="lux3"></td>
-      </tr>
+        <td id="tc3"></td>
+      </tr>    
     </table>
 
     <script>
-      const socket = new WebSocket('ws://192.168.8.102:81/');
+      const socket = new WebSocket('ws://192.168.10.18:81/');
 
       socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        document.getElementById('adc1').textContent = data.adc1;
-        document.getElementById('adc2').textContent = data.adc2;
-        document.getElementById('adc3').textContent = data.adc3;
-        document.getElementById('v1').textContent = data.v1;
-        document.getElementById('v2').textContent = data.v2;
-        document.getElementById('v3').textContent = data.v3;
         document.getElementById('lux1').textContent = data.lux1;
         document.getElementById('lux2').textContent = data.lux2;
         document.getElementById('lux3').textContent = data.lux3;
+        document.getElementById('tc1').textContent = data.tc1;
+        document.getElementById('tc2').textContent = data.tc2;
+        document.getElementById('tc3').textContent = data.tc3;
+
       };
     </script>
   </body>
