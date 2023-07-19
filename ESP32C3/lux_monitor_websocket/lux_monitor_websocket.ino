@@ -1,8 +1,12 @@
+
+
 #include <WiFi.h>
 #include <WebSocketsServer.h>
 #include "max6675.h"
 #include <Wire.h>  //for i2c
 #include <BH1750.h>
+#include <FS.h>
+#include <SPIFFS.h>
 
 // MAX6675 Setup on SPI Interface for tc1
 int thermoDO = 0;
@@ -54,11 +58,11 @@ float tc2 = 0;
 
 void setup() {
 
-  pinMode(lux1_en, OUTPUT); // to avoid bh1750 error
-  pinMode(lux2_en, OUTPUT); // to avoid bh1750 error
-  pinMode(lux3_en, OUTPUT); // to avoid bh1750 error
-  pinMode(lux4_en, OUTPUT); // to avoid bh1750 error
-  pinMode(lux5_en, OUTPUT); // to avoid bh1750 error 
+  pinMode(lux1_en, OUTPUT);  // to avoid bh1750 error
+  pinMode(lux2_en, OUTPUT);  // to avoid bh1750 error
+  pinMode(lux3_en, OUTPUT);  // to avoid bh1750 error
+  pinMode(lux4_en, OUTPUT);  // to avoid bh1750 error
+  pinMode(lux5_en, OUTPUT);  // to avoid bh1750 error
   digitalWrite(lux1_en, HIGH);
   digitalWrite(lux2_en, HIGH);
   digitalWrite(lux3_en, HIGH);
@@ -84,7 +88,12 @@ void setup() {
   digitalWrite(lux3_en, LOW);
   digitalWrite(lux4_en, LOW);
   digitalWrite(lux5_en, LOW);
-
+  bool success = SPIFFS.begin();
+  // Initialize SPIFFS
+  if (!success) {
+    Serial.println("SPIFFS initialization failed");
+    return;
+  }
 }
 
 void loop() {
@@ -94,7 +103,7 @@ void loop() {
   digitalWrite(lux1_en, HIGH);
   lux1 = lightMeter1.readLightLevel();
   digitalWrite(lux1_en, LOW);
- 
+
   digitalWrite(lux2_en, HIGH);
   lux2 = lightMeter1.readLightLevel();
   digitalWrite(lux2_en, LOW);
@@ -115,13 +124,12 @@ void loop() {
 
   // Read MAX6675 (01) Value in Degree C
   tc1 = thermocouple.readCelsius();
-  tc2 = thermocouple2.readCelsius(); 
+  tc2 = thermocouple2.readCelsius();
   delay(180);
   // Send ADC readings to connected clients
   sendADCReadings();
   // Handle WebSocket events
   webSocketServer.loop();
-  
 }
 
 void connectToWiFi() {
