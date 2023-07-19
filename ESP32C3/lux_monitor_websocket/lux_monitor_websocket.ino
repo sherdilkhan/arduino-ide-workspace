@@ -5,24 +5,20 @@
 #include "max6675.h"
 #include <Wire.h>  //for i2c
 #include <BH1750.h>
-#include <FS.h>
-#include <SPIFFS.h>
+
 
 // MAX6675 Setup on SPI Interface for tc1
 int thermoDO = 0;
-int thermoCS = 2;
 int thermoCLK = 1;
-MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
+int thermoCS1 = 2;
+// MAX6675 Setup on SPI Interface for tc1
+
+MAX6675 thermocouple1(thermoCLK, thermoCS1, thermoDO);
 
 // MAX6675 Setup on SPI Interface for tc2
 int thermoCS2 = 3;
-
 MAX6675 thermocouple2(thermoCLK, thermoCS2, thermoDO);
 
-// MAX6675 Setup on SPI Interface for tc2
-int thermoCS3 = 10;
-
-MAX6675 thermocouple3(thermoCLK, thermoCS3, thermoDO);
 
 // BH1750 Setup on I2C Interface
 #define I2C_SDA_PIN 9
@@ -30,11 +26,11 @@ MAX6675 thermocouple3(thermoCLK, thermoCS3, thermoDO);
 BH1750 lightMeter1;
 
 
-#define lux1_en 5
-#define lux2_en 6
-#define lux3_en 7
-#define lux4_en 18
-#define lux5_en 19
+#define lux1_en 4
+#define lux2_en 5
+#define lux3_en 6
+#define lux4_en 7
+#define lux5_en 18
 
 
 // Replace with your network credentials
@@ -58,6 +54,16 @@ float tc2 = 0;
 
 void setup() {
 
+  // Initialize serial communication
+  Serial.begin(115200);
+  // Connect to Wi-Fi
+  connectToWiFi();
+  // Start the WebSocket server
+  webSocketServer.begin();
+  // Set the callback function for WebSocket events
+  webSocketServer.onEvent(webSocketEvent);
+  Serial.println("WebSocket server started");
+
   pinMode(lux1_en, OUTPUT);  // to avoid bh1750 error
   pinMode(lux2_en, OUTPUT);  // to avoid bh1750 error
   pinMode(lux3_en, OUTPUT);  // to avoid bh1750 error
@@ -69,17 +75,10 @@ void setup() {
   digitalWrite(lux4_en, HIGH);
   digitalWrite(lux5_en, HIGH);
 
-  // Initialize serial communication
-  Serial.begin(115200);
-  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
-  lightMeter1.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0X5C);
-  // Connect to Wi-Fi
-  connectToWiFi();
-  // Start the WebSocket server
-  webSocketServer.begin();
-  // Set the callback function for WebSocket events
-  webSocketServer.onEvent(webSocketEvent);
-  Serial.println("WebSocket server started");
+
+  //Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  //lightMeter1.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0X5C);
+  
   // Initialize the second MAX6675 sensor
   //pinMode(thermoCS2, OUTPUT);
   //digitalWrite(thermoCS2, HIGH);
@@ -88,18 +87,13 @@ void setup() {
   digitalWrite(lux3_en, LOW);
   digitalWrite(lux4_en, LOW);
   digitalWrite(lux5_en, LOW);
-  bool success = SPIFFS.begin();
-  // Initialize SPIFFS
-  if (!success) {
-    Serial.println("SPIFFS initialization failed");
-    return;
-  }
+
 }
 
 void loop() {
 
   // Read BH1750 @ 0X5C Value in Lux
-
+/*
   digitalWrite(lux1_en, HIGH);
   lux1 = lightMeter1.readLightLevel();
   digitalWrite(lux1_en, LOW);
@@ -120,10 +114,10 @@ void loop() {
   lux5 = lightMeter1.readLightLevel();
   digitalWrite(lux5_en, LOW);
 
-
+*/
 
   // Read MAX6675 (01) Value in Degree C
-  tc1 = thermocouple.readCelsius();
+  tc1 = thermocouple1.readCelsius();
   tc2 = thermocouple2.readCelsius();
   delay(180);
   // Send ADC readings to connected clients
