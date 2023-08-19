@@ -29,7 +29,7 @@ void taskMotor1(void *parameter) {
     // Motor 1 control logic here
     digitalWrite(motor1DirFwd, HIGH); // Set direction forward
     digitalWrite(motor1DirBwd, LOW);
-    ledcWrite(0, 128);  // Set PWM duty cycle to 50%
+    ledcWrite(0, 255);  // Set PWM duty cycle to 50%
 
     vTaskDelay(pdMS_TO_TICKS(50));  // Task delay
   }
@@ -48,7 +48,7 @@ void taskMotor2(void *parameter) {
     // Motor 2 control logic here
     digitalWrite(motor2DirFwd, HIGH); // Set direction forward
     digitalWrite(motor2DirBwd, LOW);
-    ledcWrite(1, 128);  // Set PWM duty cycle to 50%
+    ledcWrite(1, 255);  // Set PWM duty cycle to 50%
 
     vTaskDelay(pdMS_TO_TICKS(40));  // Task delay
   }
