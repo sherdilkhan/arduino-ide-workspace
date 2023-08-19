@@ -34,8 +34,8 @@ BH1750 lightMeter1;
 
 
 // Replace with your network credentials
-const char* ssid = "Sherdil";
-const char* password = "03336830763BB";
+const char* ssid = "Sherdil114";
+const char* password = "crescent114";
 
 // Set up the WebSocket server
 WebSocketsServer webSocketServer = WebSocketsServer(81);
@@ -76,12 +76,12 @@ void setup() {
   digitalWrite(lux5_en, HIGH);
 
 
-  //Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
-  //lightMeter1.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0X5C);
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
+  lightMeter1.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0X5C);
   
   // Initialize the second MAX6675 sensor
-  //pinMode(thermoCS2, OUTPUT);
-  //digitalWrite(thermoCS2, HIGH);
+  pinMode(thermoCS2, OUTPUT);
+  digitalWrite(thermoCS2, HIGH);
   digitalWrite(lux1_en, LOW);
   digitalWrite(lux2_en, LOW);
   digitalWrite(lux3_en, LOW);
@@ -93,7 +93,6 @@ void setup() {
 void loop() {
 
   // Read BH1750 @ 0X5C Value in Lux
-/*
   digitalWrite(lux1_en, HIGH);
   lux1 = lightMeter1.readLightLevel();
   digitalWrite(lux1_en, LOW);
@@ -114,7 +113,6 @@ void loop() {
   lux5 = lightMeter1.readLightLevel();
   digitalWrite(lux5_en, LOW);
 
-*/
 
   // Read MAX6675 (01) Value in Degree C
   tc1 = thermocouple1.readCelsius();

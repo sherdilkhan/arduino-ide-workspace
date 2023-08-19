@@ -49,7 +49,7 @@
     </table>
 
     <script>
-      const socket = new WebSocket('ws://192.168.10.18:81/');
+      const socket = new WebSocket('ws://192.168.8.103:81/');
 
       socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
