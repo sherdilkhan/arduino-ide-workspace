@@ -70,10 +70,20 @@ void taskPushButton(void *parameter) {
 
   while (true) {
     // Check the push button state
-    
+    bool buttonState = digitalRead(pushButton);
+
+    if (buttonState && !isButtonPressed) {
+      isButtonPressed = true;
+      digitalWrite(ledPin, HIGH);  // Turn on LED when button is pressed
+    } else if (!buttonState && isButtonPressed) {
+      isButtonPressed = false;
+      digitalWrite(ledPin, LOW);   // Turn off LED when button is released
+    }
+
     vTaskDelay(pdMS_TO_TICKS(50));  // Task delay
   }
 }
+
 
 
 void setup() {
