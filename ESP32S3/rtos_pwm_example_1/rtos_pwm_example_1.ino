@@ -2,9 +2,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <PubSubClient.h> // Include your MQTT library here
+#include <math.h>
 #include <WiFi.h>
-
-
 
 // MQTT configurations
 const char *mqttServer = "291cdd7712d74aa1bbc793e426f8ddc2.s1.eu.hivemq.cloud";
@@ -15,11 +14,10 @@ const char *mqttPassword = "H5@viSu3H!5HG_g";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-
-
 // Global variables to hold motor speeds
 int motorSpeed1 = 0;
 int motorSpeed2 = 0;
+
 
 // Motor 1 configurations
 const int motor1PWM = 2;
@@ -68,7 +66,6 @@ void taskMQTT(void *parameter) {
     vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
-
 
 void taskMotor1(void *parameter) {
   pinMode(motor1PWM, OUTPUT);
@@ -135,8 +132,6 @@ void taskPushButton(void *parameter) {
     vTaskDelay(pdMS_TO_TICKS(50));  // Task delay
   }
 }
-
-
 
 void setup() {
   Serial.begin(115200);
